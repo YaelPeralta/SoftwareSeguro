@@ -21,7 +21,11 @@ async function onSubmitForm(event) {
         });
         const data = await response.json();
         console.log("Respuesta del servidor:", data);
-        IniciarSesion();
+        if(data.score <= 0.5){
+            alert("ReCaptcha fallido, volver a intentar");
+        }else{
+            IniciarSesion();
+        }
     } catch (error) {
         console.error("Error al enviar el token:", error);
     }

@@ -8,6 +8,30 @@ class Usuario{
     }
 }
 
+document.getElementById("myForm").addEventListener("submit", onSubmitForm);
+
+async function onSubmitForm(event) {
+    event.preventDefault();
+    const token = await grecaptcha.execute('6LcRiuEqAAAAAGk_X2kIeLy7jRNmlFzvPdqn3kYV', { action: 'submit' });
+    try {
+        const response = await fetch(`${tunel}captcha/${token}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({})
+        });
+        const data = await response.json();
+        console.log("Respuesta del servidor:", data);
+        if (data.score <= 0.5) {
+            alert("ReCaptcha fallido, volver a intentar");
+        } else {
+            AñadirUsuario();
+        }
+    } catch (error) {
+        console.error("Error al enviar el token:", error);
+    }
+}
+
+
 function Cancelar() {
     location.href = "index.html";
 }

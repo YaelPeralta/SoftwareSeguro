@@ -29,18 +29,14 @@ app.use(express.json());
 
 app.post('/captcha/:token', async (req, res) => {
     const token = req.params.token;
-
-    // Preparamos los parámetros que enviaremos a Google en formato URL-encoded
     const params = new URLSearchParams();
     params.append('secret', recaptchaSecret);
     params.append('response', token);
 
     try {
-        // Enviamos la solicitud POST a la API de verificación de reCAPTCHA
         const googleResponse = await axios.post('https://www.google.com/recaptcha/api/siteverify', params, {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
-        // Respuesta de Google (incluye success, score, action, etc.)
         res.json(googleResponse.data);
     } catch (error) {
         console.error('Error al verificar reCAPTCHA:', error);
