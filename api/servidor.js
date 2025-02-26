@@ -4,7 +4,8 @@ const app = express();
 const port = 3000;
 const cors = require('cors');
 const axios = require('axios');
-const recaptchaSecret = '6Lely-IqAAAAAMN5GLU9r5qszx2pRcDwzdjjuM_s';
+const recaptchaSecret1 = '6Lely-IqAAAAAMN5GLU9r5qszx2pRcDwzdjjuM_s';
+const recaptchaSecret2 = '6LdxteIqAAAAAP_Bj-BZ9M9_UD7zPZLJJ1IMUtqH';
 app.use(cors());
 
 app.use((req, res, next) => {
@@ -29,20 +30,25 @@ app.use(express.json());
 
 app.post('/captcha/:token', async (req, res) => {
     const token = req.params.token;
-    const params = new URLSearchParams();
-    params.append('secret', recaptchaSecret);
-    params.append('response', token);
+    const params1 = new URLSearchParams({ secret: recaptchaSecret1, response: token });
+    const params2 = new URLSearchParams({ secret: recaptchaSecret2, response: token });
 
     try {
-        const googleResponse = await axios.post('https://www.google.com/recaptcha/api/siteverify', params, {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        const [response1, response2] = await Promise.all([
+            axios.post('https://www.google.com/recaptcha/api/siteverify', params1, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }),
+            axios.post('https://www.google.com/recaptcha/api/siteverify', params2, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+        ]);
+
+        res.json({
+            recaptcha1: response1.data,
+            recaptcha2: response2.data
         });
-        res.json(googleResponse.data);
     } catch (error) {
         console.error('Error al verificar reCAPTCHA:', error);
         res.status(500).json({ error: 'Error al verificar reCAPTCHA' });
     }
 });
+
 
 app.get('/task/:id_user', (req, res) => {
     const { id_user } = req.params;
