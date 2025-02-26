@@ -4,7 +4,7 @@ const app = express();
 const port = 3000;
 const cors = require('cors');
 const axios = require('axios');
-const recaptchaSecret = '6LcRiuEqAAAAAAMRiqI_M2gqu0JPMcKGTTXtzAKQ';
+const recaptchaSecret = '6Lely-IqAAAAAMN5GLU9r5qszx2pRcDwzdjjuM_s';
 app.use(cors());
 
 app.use((req, res, next) => {
@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: 'passwd1',
     database: 'taskDB'
 });
 
@@ -71,7 +71,7 @@ app.delete('/task/:id', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log("Servidor corriendo en http://localhost:${port}");
+    console.log(`Servidor corriendo en http://localhost:${port}`);
 });
 
 app.get('/user/:usuario', (req, res) => {

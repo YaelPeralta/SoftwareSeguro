@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,16 +15,16 @@
             <input type="text" id="input" placeholder="Añadir tarea">
             <button class="g-recaptcha" data-sitekey="6LcRiuEqAAAAAGk_X2kIeLy7jRNmlFzvPdqn3kYV" data-callback='onSubmit'
                 data-action='submit' onclick="AñadirTarea()">Añadir</button>
-            <button type="button" onclick="CerrarSesion()">Cerrar sesion</button> 
+            <button type="button" onclick="CerrarSesion()">Cerrar sesion</button>
         </form>
         <div id="lista"></div>
-    <script src="task/app.js"></script>
-    <script src="https://www.google.com/recaptcha/api.js"></script>
-    <script>
-        function onSubmit(token) {
-            document.getElementById("demo-form").submit();
-        }
-    </script>
+        <script src="task/app.js"></script>
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+        <script>
+            function onSubmit(token) {
+                document.getElementById("demo-form").submit();
+            }
+        </script>
 </body>
 
 </html>

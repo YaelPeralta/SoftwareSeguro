@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tareas</title>
     <link rel="stylesheet" href="index/style.css">
-    <script src="https://www.google.com/recaptcha/api.js?render=6LcRiuEqAAAAAGk_X2kIeLy7jRNmlFzvPdqn3kYV"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6Lely-IqAAAAAEb2tMSkoger4XlGYTdf8Q0lDRE3"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -16,6 +17,9 @@
             <input type="text" id="usuario" placeholder="Usuario">
             <label>Contraseña:</label>
             <input type="text" id="contraseña" placeholder="Contraseña">
+            <div id="recaptchaV2Container" style="display: none;">
+                <div class="g-recaptcha" data-sitekey="6LdxteIqAAAAAL9FmpSWxJsf-YjaXStb3ZYuYnl0"></div>
+            </div>
             <button type="submit">Iniciar Sesión</button>
             <a onclick="CrearCuenta()">¿No tienes cuenta? Crear una</a>
         </form>
