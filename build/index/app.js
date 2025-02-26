@@ -11,7 +11,6 @@ document.getElementById("myForm").addEventListener("submit", async function (eve
     event.preventDefault();
 
     if (document.getElementById("recaptchaV2Container").style.display === "block") {
-        // Si el reCAPTCHA v2 está visible, validar su respuesta
         let v2Response = grecaptcha.getResponse();
         if (!v2Response) {
             alert("Por favor, completa el reCAPTCHA");
@@ -19,7 +18,6 @@ document.getElementById("myForm").addEventListener("submit", async function (eve
         }
         validarUsuario(v2Response);
     } else {
-        // Ejecutar reCAPTCHA v3 primero
         const token = await grecaptcha.execute('6Lely-IqAAAAAEb2tMSkoger4XlGYTdf8Q0lDRE3', { action: 'submit' });
         console.log(token)
         try {
@@ -31,11 +29,9 @@ document.getElementById("myForm").addEventListener("submit", async function (eve
             const data = await response.json();
             console.log("Respuesta del servidor:", data.score);
             if (data.score <= 0.5) {
-                // Mostrar reCAPTCHA v2
                 alert("Verificación adicional requerida. Por favor, marca el reCAPTCHA.");
                 document.getElementById("recaptchaV2Container").style.display = "block";
             } else {
-                // Si la puntuación es suficiente, iniciar sesión
                 validarUsuario(token);
             }
         } catch (error) {
@@ -71,32 +67,7 @@ async function validarUsuario(token) {
     }
 }
 
-async function IniciarSesion() {
-    let usuario = document.getElementById("usuario").value;
-    let contraseña = document.getElementById("contraseña").value;
-    let newUsuario = new Usuario(usuario, contraseña);
 
-    try {
-        const response = await fetch(`${tunel}user/${newUsuario.usuario}`);
-        if (!response.ok) {
-            alert("Usuario no encontrado");
-            return;
-        }
-
-        const usuarioData = await response.json();
-
-        if (usuarioData.contraseña === newUsuario.contraseña) {
-            alert("Inicio de sesión exitoso");
-            localStorage.setItem("id_user", usuarioData.id);
-            location.href = "tasks.html";
-        } else {
-            alert("Contraseña incorrecta");
-        }
-
-    } catch (error) {
-        console.error("Error al iniciar sesión:", error);
-    }
-}
 
 function CrearCuenta() {
     location.href = "new_account.html"
