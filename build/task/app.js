@@ -55,9 +55,10 @@ class ListaTareas {
         }
     }
 
-    async Eliminar(id, id_user) {
+    async Eliminar(id) {
+        const userId = localStorage.getItem("id_user");
         try {
-            const response = await fetch(`${tunel}task/${id}?id_user=${id_user}`, {
+            const response = await fetch(`${tunel}task/${id}?id_user=${userId}`, {
                 method: "DELETE"
             });
 
