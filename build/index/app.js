@@ -21,7 +21,7 @@ document.getElementById("myForm").addEventListener("submit", async function (eve
     } else {
         // Ejecutar reCAPTCHA v3 primero
         const token = await grecaptcha.execute('6Lely-IqAAAAAEb2tMSkoger4XlGYTdf8Q0lDRE3', { action: 'submit' });
-
+        console.log(token)
         try {
             const response = await fetch(`${tunel}captcha/${token}`, {
                 method: "POST",
@@ -29,8 +29,7 @@ document.getElementById("myForm").addEventListener("submit", async function (eve
                 body: JSON.stringify({})
             });
             const data = await response.json();
-            console.log("Respuesta del servidor:", data);
-
+            console.log("Respuesta del servidor:", data.score);
             if (data.score <= 0.5) {
                 // Mostrar reCAPTCHA v2
                 alert("Verificación adicional requerida. Por favor, marca el reCAPTCHA.");

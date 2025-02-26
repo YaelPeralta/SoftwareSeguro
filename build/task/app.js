@@ -55,14 +55,23 @@ class ListaTareas {
         }
     }
 
-    async Eliminar(id) {
+    async Eliminar(id, id_user) {
         try {
-            await fetch(`${tunel}${id}`, { method: "DELETE" });
+            const response = await fetch(`${tunel}task/${id}?id_user=${id_user}`, {
+                method: "DELETE"
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Error al eliminar la tarea");
+            }
+
             this.Listar();
         } catch (error) {
             console.error("Error al eliminar la tarea de la API:", error);
         }
     }
+
 }
 
 let lista = new ListaTareas();

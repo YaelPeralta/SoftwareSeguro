@@ -64,11 +64,31 @@ app.post('/task', (req, res) => {
 
 app.delete('/task/:id', (req, res) => {
     const { id } = req.params;
-    db.query('DELETE FROM task WHERE id = ?', [id], (err) => {
-        if (err) throw err;
-        res.sendStatus(204);
+    const { id_user } = req.query;
+
+    if (!id_user) {
+        return res.status(400).json({ error: 'ID de usuario requerido' });
+    }
+
+    db.query('SELECT * FROM task WHERE id = ? AND id_user = ?', [id, id_user], (err, results) => {
+        if (err) {
+            console.error('Error al buscar la tarea:', err);
+            return res.status(500).json({ error: 'Error interno del servidor' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Tarea no encontrada o no pertenece al usuario' });
+        }
+        db.query('DELETE FROM task WHERE id = ? AND id_user = ?', [id, id_user], (err) => {
+            if (err) {
+                console.error('Error al eliminar la tarea:', err);
+                return res.status(500).json({ error: 'Error al eliminar la tarea' });
+            }
+            res.json({ message: 'Tarea eliminada correctamente' });
+        });
     });
 });
+
 
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
