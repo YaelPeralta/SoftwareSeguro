@@ -1,4 +1,4 @@
-const tunel = "https://cr8f7838-3000.usw3.devtunnels.ms/"
+const tunel = "https://sksq0m94-3000.usw3.devtunnels.ms/"
 
 class Tarea {
     constructor(nombre) {

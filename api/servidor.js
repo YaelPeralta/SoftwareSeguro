@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'passwd1',
+    password: '',
     database: 'taskDB'
 });
 
