@@ -67,8 +67,6 @@ async function validarUsuario(token) {
     }
 }
 
-
-
 function CrearCuenta() {
     location.href = "new_account.html"
 }
