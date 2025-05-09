@@ -33,7 +33,7 @@ class ListaTareas {
                 nuevaTarea.id = data.id;
                 return nuevaTarea;
             } catch (error) {
-                console.error("Error al guardar la tarea en la API:", error);
+                //console.error("Error al guardar la tarea en la API:", error);
             }
         }
     }
@@ -56,7 +56,7 @@ class ListaTareas {
             });
             document.getElementById("lista").innerHTML = res + "</table>";
         } catch (error) {
-           console.log("Error al cargar las tareas desde la API:", error);
+           //console.log("Error al cargar las tareas desde la API:", error);
         }
     }
 
