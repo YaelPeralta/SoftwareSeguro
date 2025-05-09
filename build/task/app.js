@@ -1,4 +1,4 @@
-const tunel = "https://xxm7cmm6-3000.usw3.devtunnels.ms/"
+const tunel = "https://xxm7cmm6-3000.usw3.devtunnels.ms/";
 
 class Tarea {
     constructor(nombre) {
@@ -15,10 +15,9 @@ class ListaTareas {
         this.ultimo = null;
     }
 
-    async Ingresar(nuevaTarea) {
-        const userId = localStorage.getItem("id_user");
+    async Ingresar(nuevaTarea, userId) {
         if (!userId) {
-            console.error("Error: el ID de usuario no está en el almacenamiento local.");
+            console.error("Error: el ID de usuario no fue proporcionado.");
             return;
         }
         if (nuevaTarea.nombre === "") {
@@ -39,24 +38,33 @@ class ListaTareas {
         }
     }
 
+    async obtenerTareas(userId) {
+        if (!userId) {
+            console.error("Error: el ID de usuario no fue proporcionado.");
+            return [];
+        }
+        const response = await fetch(`${tunel}task/${userId}`);
+        return await response.json();
+    }
 
-    async Listar() {
-        const userId = localStorage.getItem("id_user");
+    async Listar(userId) {
         try {
-            const response = await fetch(`${tunel}task/${userId}`);
-            const tareas = await response.json();
+            const tareas = await this.obtenerTareas(userId);
             let res = "<table><tr><th>No. Tarea</th><th>Nombre</th><th>Eliminar</th></tr>";
             tareas.forEach((tarea, index) => {
-                res += `<tr><td>${index + 1}</td><td>${tarea.nombre}</td><td><button type='button' onclick='eliminarTarea(${tarea.id})'>Eliminar</button></td></tr>`;
+                res += `<tr><td>${index + 1}</td><td>${tarea.nombre}</td><td><button type='button' onclick='eliminarTarea(${tarea.id}, "${userId}")'>Eliminar</button></td></tr>`;
             });
             document.getElementById("lista").innerHTML = res + "</table>";
         } catch (error) {
-            console.error("Error al cargar las tareas desde la API:", error);
+           console.log("Error al cargar las tareas desde la API:", error);
         }
     }
 
-    async Eliminar(id) {
-        const userId = localStorage.getItem("id_user");
+    async Eliminar(id, userId) {
+        if (!userId) {
+            console.error("Error: el ID de usuario no fue proporcionado.");
+            return;
+        }
         try {
             const response = await fetch(`${tunel}task/${id}?id_user=${userId}`, {
                 method: "DELETE"
@@ -67,16 +75,18 @@ class ListaTareas {
                 throw new Error(errorData.error || "Error al eliminar la tarea");
             }
 
-            this.Listar();
+            this.Listar(userId);
         } catch (error) {
             console.error("Error al eliminar la tarea de la API:", error);
         }
     }
-
 }
 
+// Simula el ID de usuario (puedes reemplazarlo con un valor dinámico)
+const userId = "1";
+
 let lista = new ListaTareas();
-lista.Listar()
+lista.Listar(userId);
 
 function AñadirTarea() {
     let nombre = document.getElementById("input").value;
@@ -84,19 +94,19 @@ function AñadirTarea() {
         alert("No se puede ingresar una tarea vacía");
     } else {
         let nuevaTarea = new Tarea(nombre);
-        lista.Ingresar(nuevaTarea).then(() => {
+        lista.Ingresar(nuevaTarea, userId).then(() => {
             document.getElementById("input").value = "";
-            lista.Listar();
+            lista.Listar(userId);
         });
     }
 }
 
-function eliminarTarea(id) {
-    lista.Eliminar(id);
+function eliminarTarea(id, userId) {
+    lista.Eliminar(id, userId);
 }
 
 function CerrarSesion() {
-    localStorage.removeItem("user_id");
+    console.log("Sesión cerrada");
     location.href = "index.html";
 }
 
