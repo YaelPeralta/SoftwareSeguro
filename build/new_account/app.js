@@ -1,4 +1,4 @@
-const tunel = "https://sksq0m94-3000.usw3.devtunnels.ms/";
+const tunel = "https://xxm7cmm6-3000.usw3.devtunnels.ms/";
 
 class Usuario{
     constructor(nombre, usuario, contraseña){
