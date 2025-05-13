@@ -90,7 +90,7 @@ lista.Listar(userId);
 
 function AñadirTarea() {
     let nombre = document.getElementById("input").value;
-    if (nombre === "") {
+    if (nombre == "" || nombre == null) {
         alert("No se puede ingresar una tarea vacía");
     } else {
         let nuevaTarea = new Tarea(nombre);
@@ -110,4 +110,7 @@ function CerrarSesion() {
     location.href = "index.html";
 }
 
-module.exports = { ListaTareas };
+module.exports = {
+    ListaTareas,
+    AñadirTarea,
+  };
